@@ -1,0 +1,60 @@
+{
+  "name": "havildar",
+  "version": "0.0.1",
+  "description": "A Error middleware for express",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "preversion": "npm run lint",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags",
+    "prepublishOnly": "npm test && npm run lint",
+    "prepare": "npm run build",
+    "test": "jest --config jestconfig.json  --coverage --verbose --detectOpenHandles",
+    "build": "npx tsc",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "lint": "eslint \"src/**/*.ts\" --fix"
+  },
+  "files": [
+    "lib/**/*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vijayrathore8492/havildar.git"
+  },
+  "keywords": [
+    "error",
+    "error handler",
+    "error middleware",
+    "error classes",
+    "err",
+    "http error",
+    "error codes",
+    "havildar",
+    "havaldar",
+    "hawaldar"
+  ],
+  "author": "vijayrathore8492",
+  "license": "GPL",
+  "bugs": {
+    "url": "https://github.com/vijayrathore8492/havildar/issues"
+  },
+  "homepage": "https://github.com/vijayrathore8492/havildar#readme",
+  "devDependencies": {
+    "@types/jest": "^25.2.1",
+    "@types/node": "^13.11.1",
+    "@typescript-eslint/eslint-plugin": "^2.27.0",
+    "@typescript-eslint/parser": "^2.27.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.2",
+    "jest": "^25.3.0",
+    "prettier": "^2.0.4",
+    "sinon": "^9.0.2",
+    "ts-jest": "^25.3.1",
+    "typescript": "^3.8.3"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0"
+  }
+}
