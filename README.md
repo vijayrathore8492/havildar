@@ -1,7 +1,7 @@
 
-# Havildar - A Error middleware for express js
+# Havildar - An Error middleware for express js
 
-## WHy to Use
+## Wyy to Use
 
 1. It has inbuilt HTTPClientError class, which you can use to create custom error classes.
 
