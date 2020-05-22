@@ -57,16 +57,32 @@ This will enable `havildar` to catch and render all errors.
 
 IMP: Set `NODE_ENV=production` to avoid sending error stack trace of unknown errors in response.
 
+#### Throw client error from anywhere in the code
+
+```javascript
+import HTTPClientError from 'havildar/lib/HttpClientError'
+/**
+ * Code in between
+ **/
+throw new HTTPClientError({ httpCode: 400, message: { error: "bad request" }});
+//Status: 400 ; Response { error: "bad request" }
+
+// OR with 200 http status
+throw new HTTPClientError({ message: { code: "1232", error: "bad request" }});
+//Status:200 ; Response { code: "1232", error: "bad request" }
+
+```
+
 #### Use Error classes to create custom errors
 
 ```javascript
-import HTTPClientError from 'havildar/HttpClientError'
+import HTTPClientError from 'havildar/lib/HttpClientError'
 ```
 
 OR
 
 ```javascript
-const HTTPClientError = require('havildar/HttpClientError');
+const HTTPClientError = require('havildar/lib/HttpClientError');
 ```
 
 Create custom Error class.
@@ -76,7 +92,7 @@ import HTTPClientError from 'havildar/lib/HttpClientError'
 
 export class HTTP400Error extends HTTPClientError {
   constructor(message: string | object = "Bad Request") {
-    super(400, message);
+    super({ httpCode: 400, message: message });
   }
 }
 ```
@@ -84,13 +100,13 @@ export class HTTP400Error extends HTTPClientError {
 Throw anywhere suitable. It will be caught, logged and rendered by `havildar`.
 
 ```javascript
-throw new HTTP400Error("invalid email address!")
+throw new HTTP400Error({ error: "invalid email address!" })
 ```
 
 You API response will be rendered correctly with HTTP status 400.
 
 ```json
-{"code":400,"error":"invalid email address!"}
+{ "error" : "invalid email address!" }
 ```
 
 ## Source Code/ Reporting issue

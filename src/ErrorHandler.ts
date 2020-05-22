@@ -2,8 +2,9 @@ import HTTPClientError from "./HttpClientError";
 
 const tryParseJSON = (jsonString) => {
   try {
-    jsonString = jsonString || {};
-    return (typeof jsonString == "object") ? jsonString : JSON.parse(jsonString) ;
+    if(typeof jsonString == "object") return jsonString;
+
+    return JSON.parse(jsonString);
   }
   catch (e) { 
     return jsonString;
@@ -11,13 +12,13 @@ const tryParseJSON = (jsonString) => {
 };
 
 export const notFoundError = () => {
-  throw new HTTPClientError(404, "Not found.");
+  throw new HTTPClientError({ httpCode: 404, message: { error: "Not found." }});
 };
 
 export const clientError = (err: Error, req, res, next, loggerFunction?: Function) => {
   if (err instanceof HTTPClientError) {
     loggerFunction ? loggerFunction(err) : console.error(err);
-    res.status(err.statusCode).send({code: err.statusCode, error: tryParseJSON(err.message)});
+    res.status(err.httpCode).send(tryParseJSON(err.message));
   } else {
     next(err);
   }
@@ -26,8 +27,8 @@ export const clientError = (err: Error, req, res, next, loggerFunction?: Functio
 export const serverError = (err: Error, req, res, next, loggerFunction?: Function) => {
   loggerFunction ? loggerFunction(err) : console.error(err);
   if (process.env.NODE_ENV === "production") {
-    res.status(500).send({code: 500, error: "Internal Server Error"});
+    res.status(500).send({ error: "Internal Server Error" });
   } else {
-    res.status(500).send({code: 500, error: tryParseJSON(err.stack)});
+    res.status(500).send({ error: tryParseJSON(err.stack)});
   }
 };

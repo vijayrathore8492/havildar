@@ -35,7 +35,7 @@ export const clientError = {
   method: "get",
   handler: [
     (_: Request, __: Response) => {
-      throw new HTTPClientError(400, "bad request");
+      throw new HTTPClientError({ httpCode: 400, message: {error: "bad request"}});
     }
   ]
 };
@@ -56,12 +56,12 @@ export const custom412Error = {
   handler: [
     (_: Request, __: Response) => {
       class Custom412Error extends HTTPClientError {
-        constructor( message) {
-          super(412, message)
+        constructor(message) {
+          super({httpCode: 412, message: message})
         }
       }
 
-      throw new Custom412Error("custom412Error occurred");
+      throw new Custom412Error({ error: "custom412Error occurred"});
     }
   ]
 };
